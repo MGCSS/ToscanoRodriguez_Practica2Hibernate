@@ -5,6 +5,8 @@
  */
 package casos_policiales;
 
+import controlador.ManejaExperto;
+
 /**
  *
  * @author david
@@ -16,6 +18,10 @@ public class Aplicacion_Cliente {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        ManejaExperto me = new ManejaExperto();
+        //me.obtenerNombresyEspeciaidad();
+        //me.expertosConEspecialidadX("Armas");
+        me.obtenerCasos();
     }
     
 }

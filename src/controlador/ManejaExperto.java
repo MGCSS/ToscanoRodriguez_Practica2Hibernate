@@ -5,8 +5,10 @@
  */
 package controlador;
 
+import java.util.List;
 import modelo.Experto;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -67,6 +69,63 @@ public class ManejaExperto {
         try {
             iniciaOperacion();
             return (Experto) sesion.get(Experto.class, idExperto);
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+            throw he;
+        }
+        finally {
+            finalizaOperacion();
+        }
+    }
+    
+    public void obtenerNombresyEspeciaidad() {
+        try {
+            iniciaOperacion();
+            String hql = "from Experto";
+            Query query = sesion.createQuery(hql);
+            List<Experto> listaExpertos = query.list();
+            for(Experto e : listaExpertos) {
+                System.out.println("Nombre: " + e.getNombre() + "\t\tEspecialidad: " + e.getEspecialidad());
+            }
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+            throw he;
+        }
+        finally {
+            finalizaOperacion();
+        }
+    }
+    
+    public void expertosConEspecialidadX(String especialidad) {
+        try {
+            iniciaOperacion();
+            String hql = "from Experto as e where e.especialidad = :especialidad";
+            Query query = sesion.createQuery(hql);
+            query.setParameter("especialidad", especialidad);
+            List<Experto> listaExpertos = query.list();
+            for(Experto e : listaExpertos) {
+                System.out.println(e.getNombre());
+            }
+        } catch (HibernateException he) {
+            manejaExcepcion(he);
+            throw he;
+        }
+        finally {
+            finalizaOperacion();
+        }
+    }
+    
+    public void obtenerCasos() {
+        try {
+            iniciaOperacion();
+            String hql = "SELECT distinct e.nombre, cp.nombre FROM Experto as e, CasoPolicial as cp"
+                + " INNER JOIN e.colaboras inner join cp.colaboras";
+            Query query = sesion.createQuery(hql);
+            List<Object[]> listaResultados = query.list();
+            for (int i = 0; i < listaResultados.size(); i++) {
+                System.out.println("Nombre: " + listaResultados.get(i)[0] + "\t\tCaso Policial: " 
+                        + listaResultados.get(i)[1]);
+            }
         } catch (HibernateException he) {
             manejaExcepcion(he);
             throw he;
