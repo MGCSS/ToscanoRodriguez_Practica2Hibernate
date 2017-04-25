@@ -21,7 +21,7 @@ public class Aplicacion_Cliente {
         ManejaExperto me = new ManejaExperto();
         //me.obtenerNombresyEspeciaidad();
         //me.expertosConEspecialidadX("Armas");
-        me.obtenerCasos();
+        //me.obtenerCasos();
     }
     
 }
